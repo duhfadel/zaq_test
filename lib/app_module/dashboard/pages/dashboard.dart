@@ -4,6 +4,7 @@ import 'package:zaq_test/app_module/add_city/pages/add_city_provider.dart';
 import 'package:zaq_test/app_module/dashboard/cubit/dashboard_cubit.dart';
 import 'package:zaq_test/app_module/dashboard/cubit/dashboard_state.dart';
 import 'package:zaq_test/app_module/dashboard/models/city.dart';
+import 'package:zaq_test/app_module/dashboard/widgets/popups.dart';
 import 'package:zaq_test/app_module/func_module/animation.dart';
 
 import '../models/forecast.dart';
@@ -11,6 +12,7 @@ import '../models/forecast.dart';
 class DashboardView extends StatelessWidget {
   DashboardView({super.key});
   Animations animations = Animations();
+  Popups popups = Popups();
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,9 @@ class DashboardView extends StatelessWidget {
                                 state.cityList![index].latitude,
                                 state.cityList![index].longitude);
                         if (forecast != null) {
-                          showPopup(context, forecast);
+                          popups.showPopup(context, forecast);
                         } else {
-                          showPopupError(context);
+                          popups.showPopupError(context);
                         }
                       },
                       child: Card(
@@ -160,70 +162,5 @@ class DashboardView extends StatelessWidget {
         },
       ),
     );
-  }
-
-  showPopup(context, Forecast forecast) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close)),
-                ),
-                const Text('Weather Forecast'),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    const Text('Temperatures in ªC: '),
-                    Text('${forecast.currentWeather!.temperature!}')
-                  ],
-                )
-              ],
-            ),
-          );
-        });
-  }
-
-  showPopupError(context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close)),
-                ),
-                const Text('Weather Forecast'),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    const Text('Please double check latitude and longitude')
-                  ],
-                )
-              ],
-            ),
-          );
-        });
   }
 }
